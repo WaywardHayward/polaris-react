@@ -41,8 +41,15 @@ Sheets provide an opportunity to let merchants dig into more detail on their cur
 
 - Use the `onClose` prop so that the sheet can be closed with the <kbd>esc</kbd> key as well as with button-based controls
 - Use a button to open the sheet
-- When the sheet opens, move focus to it so merchants who rely on the keyboard and screen readers can access it
-- When the sheet closes, move focus back to the button that launched it
+- When the sheet opens, focus moves to it so merchants who rely on the keyboard and screen readers can access it
+- Focus is kept in the sheet until it is dismissed
+- When the sheet closes, focus moves back to the button that launched it
+
+---
+
+## Responsive behavior
+
+At small screen sizes, the sheet component enters the page from the bottom of the screen. At larger screen sizes, the sheet component enters the page from the right side of the scren.
 
 ---
 
@@ -161,7 +168,6 @@ class SheetExample extends React.Component {
                     onChange={handleChange('description')}
                     value={description}
                     multiline
-                    readOnly
                   />
                 </FormLayout>
               </Card>
@@ -260,13 +266,11 @@ class SheetExample extends React.Component {
   get selectedSalesChannels() {
     const {salesChannels, selected} = this.state;
 
-    const salesChannelsObj = salesChannels.reduce((accumulator, current) => {
-      accumulator[current.value] = current.label;
-      return accumulator;
-    }, {});
-
-    return selected.map((element) => {
-      return salesChannelsObj[element];
+    return selected.map((key) => {
+      return salesChannels.reduce((accumulator, current) => {
+        accumulator[current.value] = current.label;
+        return accumulator;
+      }, {})[key];
     });
   }
 }
@@ -276,5 +280,5 @@ class SheetExample extends React.Component {
 
 ## Related components
 
-- To offer an action before merchants can go to the next step in the flow, use the [modal component](/components/overlays/modal).
-- To present a small amount of content or a menu of actions in a non-blocking overlay, use the [popover component](/components/overlays/popover).
+- To offer an action before merchants can go to the next step in the flow, use the [modal component](/components/overlays/modal)
+- To present a small amount of content or a menu of actions in a non-blocking overlay, use the [popover component](/components/overlays/popover)
